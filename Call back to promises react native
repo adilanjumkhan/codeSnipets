@@ -1,0 +1,41 @@
+const onProgressHandler = (value: number) => {
+  console.log(value);
+};
+
+const onCompleteHandler = (value: boolean) => {
+  console.log(value);
+};
+
+const uploading = (
+  onProgress: (value: number) => void,
+  onComplete: (isCompleted: boolean) => void,
+) => {
+  let i = 0;
+  setInterval(() => {
+    if (i < 10) {
+      i++;
+      onProgress(i);
+      onComplete(false);
+    } else {
+      onProgress(i);
+      onComplete(true);
+    }
+  }, 1000);
+};
+
+export const callbackIntoPromise = () => {
+  return new Promise<boolean>((resolve, reject) => {
+    uploading(
+      value => {
+        if (value < 10) {
+          resolve(false);
+        }
+      },
+      value => {
+        if (value) {
+          resolve(true);
+        }
+      },
+    );
+  });
+};
